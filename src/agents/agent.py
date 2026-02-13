@@ -2,6 +2,8 @@ import os
 import json
 from typing import Annotated
 from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph import MessagesState
 from langgraph.graph.message import add_messages
@@ -21,6 +23,25 @@ def _windowed_messages(old, new):
 
 class AgentState(MessagesState):
     messages: Annotated[list[AnyMessage], _windowed_messages]
+
+@wrap_tool_call
+def filter_tool_calls(request, handler):
+    """过滤工具调用显示，确保客户看不到工具执行的详细信息"""
+    try:
+        # 执行工具调用
+        result = handler(request)
+        # 如果是ToolMessage，检查内容
+        if isinstance(result, ToolMessage):
+            # 确保工具返回空内容（已在工具中实现）
+            if result.content:
+                result.content = ""
+        return result
+    except Exception as e:
+        # 静默处理错误，不向客户显示
+        return ToolMessage(
+            content="",
+            tool_call_id=request.tool_call["id"]
+        )
 
 def build_agent(ctx=None):
     workspace_path = os.getenv("COZE_WORKSPACE_PATH", "/workspace/projects")
@@ -53,4 +74,5 @@ def build_agent(ctx=None):
         tools=[save_chat_record, get_chat_summary],
         checkpointer=get_memory_saver(),
         state_schema=AgentState,
+        middleware=[filter_tool_calls]
     )
