@@ -1,7 +1,7 @@
 services:
   - type: web
     name: paperbagglue-chat
-    runtime: python
+    runtime: python-3.12.0
     plan: free
     region: oregon
     buildCommand: pip install --no-cache-dir -r requirements.txt
@@ -11,4 +11,5 @@ services:
         value: 5000
       - key: PYTHON_VERSION
         value: 3.12.0
+
     autoDeploy: true
