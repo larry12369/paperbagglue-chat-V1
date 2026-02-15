@@ -3,7 +3,7 @@ Flask API Service for Customer Support Agent
 提供客服智能体的HTTP API接口
 """
 
-from flask import Flask, request, jsonify, Response, stream_with_context
+from flask import Flask, request, jsonify, Response, stream_with_context, send_from_directory
 from flask_cors import CORS
 import uuid
 import asyncio
@@ -211,6 +211,20 @@ def get_config():
             'email': 'LarryChen@paperbagglue.com'
         }
     })
+
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    """
+    提供静态文件服务
+    用于提供聊天组件的JavaScript文件
+    """
+    try:
+        static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+        return send_from_directory(static_dir, filename, cache_timeout=0)
+    except Exception as e:
+        logger.error(f"Error serving static file {filename}: {e}")
+        return jsonify({'error': 'File not found'}), 404
 
 
 if __name__ == '__main__':
