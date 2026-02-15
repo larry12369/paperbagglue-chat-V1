@@ -25,7 +25,7 @@ def initialize_agent():
                 logger.info(f"✓ Found config file at: {path}")
 Flask API Service for Customer Support Agent
 提供客服智能体的HTTP API接口
-"""
+
 
 from flask import Flask, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
