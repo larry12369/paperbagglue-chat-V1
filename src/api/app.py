@@ -1,31 +1,5 @@
-def initialize_agent():
-    """初始化Agent实例"""
-    global agent_instance, agent_config
-    
-    try:
-        logger.info("Initializing agent...")
-        
-        # 获取当前工作目录
-        current_dir = os.getcwd()
-        logger.info(f"Current directory: {current_dir}")
-        
-        # 尝试多个可能的路径
-        possible_paths = [
-            '/opt/render/project/src/config/agent_llm_config.json',
-            '/opt/render/project/config/agent_llm_config.json',
-            os.path.join(current_dir, 'config/agent_llm_config.json'),
-            os.path.join(current_dir, '../config/agent_llm_config.json'),
-        ]
-        
-        config_path = None
-        for path in possible_paths:
-            logger.info(f"Checking path: {path}")
-            if os.path.exists(path):
-                config_path = path
-                logger.info(f"✓ Found config file at: {path}")
-Flask API Service for Customer Support Agent
-提供客服智能体的HTTP API接口
-
+# Flask API Service for Customer Support Agent
+# 提供客服智能体的HTTP API接口
 
 from flask import Flask, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
@@ -61,16 +35,42 @@ def initialize_agent():
     
     try:
         logger.info("Initializing agent...")
-        agent_instance = build_agent()
         
-        # 读取配置
-        config_path = os.path.join(os.getenv('COZE_WORKSPACE_PATH', '/workspace/projects'), 
-                                   'config/agent_llm_config.json')
+        # 获取当前工作目录
+        current_dir = os.getcwd()
+        logger.info(f"Current directory: {current_dir}")
+        
+        # 尝试多个可能的路径
+        possible_paths = [
+            '/opt/render/project/src/config/agent_llm_config.json',
+            '/opt/render/project/config/agent_llm_config.json',
+            os.path.join(current_dir, 'config/agent_llm_config.json'),
+            os.path.join(current_dir, '../config/agent_llm_config.json'),
+        ]
+        
+        config_path = None
+        for path in possible_paths:
+            logger.info(f"Checking path: {path}")
+            if os.path.exists(path):
+                config_path = path
+                logger.info(f"✅ Found config file at: {path}")
+                break
+        
+        if config_path is None:
+            logger.error("Config file not found!")
+            return False
+        
+        logger.info(f"Using config: {config_path}")
+        
+        agent_instance = build_agent()
+        logger.info("Agent initialized successfully")
+        
         with open(config_path, 'r', encoding='utf-8') as f:
             agent_config = json.load(f)
         
-        logger.info("Agent initialized successfully")
+        logger.info("Config loaded successfully")
         return True
+        
     except Exception as e:
         logger.error(f"Failed to initialize agent: {e}")
         return False
@@ -199,23 +199,3 @@ if __name__ == '__main__':
     # 启动Flask服务
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True, threaded=True)
-                break
-        
-        if config_path is None:
-            logger.error("Config file not found!")
-            return False
-        
-        logger.info(f"Using config: {config_path}")
-        
-        agent_instance = build_agent()
-        logger.info("Agent initialized successfully")
-        
-        with open(config_path, 'r', encoding='utf-8') as f:
-            agent_config = json.load(f)
-        
-        logger.info("Config loaded successfully")
-        return True
-        
-    except Exception as e:
-        logger.error(f"Failed to initialize agent: {e}")
-        return False
