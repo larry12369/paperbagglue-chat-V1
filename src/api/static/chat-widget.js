@@ -13,6 +13,7 @@
     AUTO_OPEN_DELAY: 3000, // 3秒后自动打开
     API_TIMEOUT: 10000, // 10秒超时
     KEEP_ALIVE_INTERVAL: 5 * 60 * 1000, // 5分钟保持活跃
+    VERSION: '2.1', // 版本号，用于强制刷新缓存
   };
 
   // 生成会话ID
