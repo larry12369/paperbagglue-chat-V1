@@ -80,7 +80,7 @@ ormsgpack==1.12.2
 packaging==25.0
 pandas==2.2.2
 paragraphs==1.0.1
-pillow==10.4.0
+pillow==10.3.0
 platformdirs==4.5.1
 pluggy==1.6.0
 postgrest==2.27.3
