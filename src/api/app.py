@@ -335,6 +335,36 @@ def get_config():
     })
 
 
+@app.route('/')
+@app.route('/<path:path>')
+def serve_frontend(path=None):
+    """
+    提供前端页面服务
+    所有非API路由都返回前端页面
+    """
+    try:
+        # 获取web目录的绝对路径
+        web_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'web')
+        
+        # 如果路径为空或者是根路径，返回 example-website.html
+        if path is None or path == '':
+            html_file = os.path.join(web_dir, 'example-website.html')
+            if os.path.exists(html_file):
+                return send_from_directory(web_dir, 'example-website.html')
+        
+        # 尝试请求的文件
+        if path:
+            file_path = os.path.join(web_dir, path)
+            if os.path.exists(file_path) and os.path.isfile(file_path):
+                return send_from_directory(web_dir, path)
+        
+        # 如果都不是，返回 index.html 或 example-website.html
+        return send_from_directory(web_dir, 'example-website.html')
+    except Exception as e:
+        logger.error(f"Error serving frontend: {e}")
+        return jsonify({'error': 'Page not found'}), 404
+
+
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     """
