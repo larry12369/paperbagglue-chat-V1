@@ -1,6 +1,6 @@
 /**
- * 纸邦胶业智能客服聊天组件
- * 完整版代码托管在 Render 服务
+ * 纸邦胶业智能客服聊天组件 - 优化版
+ * 添加加载提示和健康检查
  */
 (function() {
   'use strict';
@@ -11,10 +11,14 @@
     UPLOAD_URL: 'https://paperbagglue-chat.onrender.com/api/upload',
     WIDGET_ID: 'chat-widget-container',
     AUTO_OPEN_DELAY: 3000, // 3秒后自动打开
+    API_TIMEOUT: 10000, // 10秒超时
+    KEEP_ALIVE_INTERVAL: 5 * 60 * 1000, // 5分钟保持活跃
   };
 
   // 生成会话ID
   let sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+  let isServiceAvailable = false;
+  let keepAliveTimer = null;
 
   // ==================== 创建HTML结构 ====================
   function createWidgetHTML() {
@@ -39,7 +43,7 @@
               <img src="https://paperbagglue.com/wp-content/uploads/2025/01/logo.png" alt="Logo" class="chat-logo" onerror="this.style.display='none'">
               <div class="chat-header-info">
                 <h3>Larry Chen</h3>
-                <p class="online-status">● Online</p>
+                <p class="online-status">● <span id="connection-status">Connecting...</span></p>
               </div>
             </div>
             <div class="chat-header-actions">
@@ -71,6 +75,14 @@
             </div>
           </div>
 
+          <!-- 加载提示 -->
+          <div id="loading-message" class="message bot-message" style="display: none;">
+            <div class="message-content loading-content">
+              <div class="loading-spinner"></div>
+              <p id="loading-text">Connecting to service...</p>
+            </div>
+          </div>
+
           <!-- 消息区域 -->
           <div id="chat-messages" class="chat-messages"></div>
 
@@ -79,7 +91,7 @@
             <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="window.chatWidget.handleFileUpload(this)">
             <button id="upload-btn" onclick="document.getElementById('image-upload').click()" title="Upload Image">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.7891 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -176,7 +188,7 @@
           to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 聊天头部 - 缩小到原来的1/3高度 */
+        /* 聊天头部 */
         .chat-header {
           background: linear-gradient(135deg, #00A859 0%, #008F4D 100%) !important;
           color: white !important;
@@ -333,13 +345,32 @@
           margin: 0 !important;
         }
 
-        .message-content ul, .message-content ol {
-          margin: 0 !important;
-          padding-left: 20px !important;
+        /* 加载样式 */
+        .loading-content {
+          display: flex !important;
+          align-items: center !important;
+          gap: 12px !important;
+          padding: 12px 16px !important;
         }
 
-        .message-content li {
-          margin: 4px 0 !important;
+        .loading-spinner {
+          width: 20px !important;
+          height: 20px !important;
+          border: 2px solid #f3f3f3 !important;
+          border-top: 2px solid #00A859 !important;
+          border-radius: 50% !important;
+          animation: spin 1s linear infinite !important;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        #loading-text {
+          margin: 0 !important;
+          color: #666 !important;
+          font-size: 13px !important;
         }
 
         /* 输入区域 */
@@ -513,6 +544,68 @@
   }
 
   // ==================== 功能函数 ====================
+  
+  // 健康检查
+  async function healthCheck() {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+      
+      const response = await fetch(CONFIG.API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: '',
+          session_id: sessionId,
+          health_check: true
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      isServiceAvailable = response.ok;
+      updateConnectionStatus(isServiceAvailable ? 'Online' : 'Offline');
+      
+      return isServiceAvailable;
+    } catch (error) {
+      console.log('Health check failed:', error);
+      isServiceAvailable = false;
+      updateConnectionStatus('Connecting...');
+      return false;
+    }
+  }
+
+  // 更新连接状态
+  function updateConnectionStatus(status) {
+    const statusEl = document.getElementById('connection-status');
+    if (statusEl) {
+      statusEl.textContent = status;
+      
+      if (status === 'Online') {
+        statusEl.style.color = '#4CAF50';
+      } else if (status === 'Offline') {
+        statusEl.style.color = '#ff4444';
+      } else {
+        statusEl.style.color = '#ff9800';
+      }
+    }
+  }
+
+  // Keep-alive定时器
+  function startKeepAlive() {
+    if (keepAliveTimer) {
+      clearInterval(keepAliveTimer);
+    }
+    
+    keepAliveTimer = setInterval(async () => {
+      console.log('Keep-alive ping...');
+      await healthCheck();
+    }, CONFIG.KEEP_ALIVE_INTERVAL);
+  }
+
   function toggleChat() {
     const chatWindow = document.getElementById('chat-window');
     const toggleBtn = document.getElementById('chat-toggle-btn');
@@ -527,6 +620,9 @@
       setTimeout(() => {
         document.getElementById('chat-input').focus();
       }, 300);
+
+      // 窗口打开时，检查服务状态
+      healthCheck();
     }
   }
 
@@ -627,6 +723,9 @@
     showTypingIndicator();
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+
       const response = await fetch(CONFIG.API_URL, {
         method: 'POST',
         headers: {
@@ -635,8 +734,11 @@
         body: JSON.stringify({
           message: message,
           session_id: sessionId
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -648,6 +750,8 @@
 
       if (data.response) {
         addMessage(data.response, 'bot');
+        isServiceAvailable = true;
+        updateConnectionStatus('Online');
       } else {
         throw new Error('No response from server');
       }
@@ -657,7 +761,11 @@
 
       removeTypingIndicator();
 
-      addMessage('Sorry, I encountered an issue. Please try again later, or contact us:\n\n📱 WhatsApp: +8613323273311\n📧 Email: LarryChen@paperbagglue.com', 'bot');
+      // 超时或错误，显示备用联系方式
+      addMessage(`Sorry, the service is temporarily unavailable. This might be due to high traffic or the service is waking up.\n\nPlease try again in a moment, or contact me directly:\n\n📱 WhatsApp: +8613323273311\n📧 Email: LarryChen@paperbagglue.com`, 'bot');
+      
+      isServiceAvailable = false;
+      updateConnectionStatus('Offline');
     } finally {
       input.disabled = false;
       document.getElementById('send-btn').disabled = true;
@@ -777,10 +885,16 @@
         if (document.getElementById('chat-window').classList.contains('active')) {
           toggleChat();
         }
-      }
+      },
+      healthCheck: healthCheck
     };
 
     console.log('PaperBagGlue Chat Widget loaded successfully');
+
+    // 启动健康检查和keep-alive
+    healthCheck().then(() => {
+      startKeepAlive();
+    });
 
     // 3秒后自动打开聊天窗口
     setTimeout(function() {
