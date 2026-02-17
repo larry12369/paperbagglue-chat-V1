@@ -377,6 +377,11 @@
           align-items: flex-end !important;
         }
 
+        /* Hide upload button - image upload is disabled */
+        #upload-btn {
+          display: none !important;
+        }
+
         #upload-btn {
           width: 36px !important;
           height: 36px !important;
