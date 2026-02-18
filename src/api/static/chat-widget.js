@@ -8,7 +8,6 @@
   // ==================== 配置 ====================
   const CONFIG = {
     API_URL: 'https://paperbagglue-chat.onrender.com/api/chat',
-    UPLOAD_URL: 'https://paperbagglue-chat.onrender.com/api/upload',
     WIDGET_ID: 'chat-widget-container',
     AUTO_OPEN_DELAY: 3000, // 3秒后自动打开
     API_TIMEOUT: 10000, // 10秒超时
@@ -82,14 +81,6 @@
 
           <!-- 输入区域 -->
           <div class="chat-input-area">
-            <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="window.chatWidget.handleFileUpload(this)">
-            <button id="upload-btn" onclick="document.getElementById('image-upload').click()" title="Upload Image">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.7891 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
             <textarea 
               id="chat-input" 
               placeholder="Type your message..." 
@@ -382,30 +373,6 @@
           display: none !important;
         }
 
-        #upload-btn {
-          width: 36px !important;
-          height: 36px !important;
-          border-radius: 8px !important;
-          background: #f0f0f0 !important;
-          border: 1px solid #d9d9d9 !important;
-          color: #666 !important;
-          cursor: pointer !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          transition: all 0.2s !important;
-        }
-
-        #upload-btn:hover {
-          background: #e0e0e0 !important;
-          color: #333 !important;
-        }
-
-        #upload-btn svg {
-          width: 18px !important;
-          height: 18px !important;
-        }
-
         #chat-input {
           flex: 1 !important;
           border: 1px solid #d9d9d9 !important;
@@ -644,68 +611,6 @@
     }
   }
 
-  async function handleFileUpload(input) {
-    const file = input.files[0];
-    if (!file) return;
-
-    // 显示用户上传的图片
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      addImageMessage(e.target.result, 'user');
-    };
-    reader.readAsDataURL(file);
-
-    // 上传到服务器
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('session_id', sessionId);
-
-    try {
-      const response = await fetch(CONFIG.UPLOAD_URL, {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const result = await response.json();
-
-      // 发送消息通知AI有新图片
-      await sendText(`[Image uploaded] ${result.file_id}`);
-
-    } catch (error) {
-      console.error('Upload error:', error);
-      addMessage('Failed to upload image. Please try again.', 'bot');
-    }
-
-    // 清空input
-    input.value = '';
-  }
-
-  function addImageMessage(imageUrl, type) {
-    const messagesContainer = document.getElementById('chat-messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${type}-message`;
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-
-    const img = document.createElement('img');
-    img.src = imageUrl;
-    img.className = 'message-image';
-    img.onclick = function() {
-      window.open(imageUrl, '_blank');
-    };
-
-    contentDiv.appendChild(img);
-    messageDiv.appendChild(contentDiv);
-    messagesContainer.appendChild(messageDiv);
-
-    scrollToBottom();
-  }
-
   async function send() {
     const input = document.getElementById('chat-input');
     const message = input.value.trim();
@@ -886,7 +791,6 @@
       toggleExpand: toggleExpand,
       send: send,
       sendText: sendText,
-      handleFileUpload: handleFileUpload,
       open: function() {
         if (!document.getElementById('chat-window').classList.contains('active')) {
           toggleChat();
