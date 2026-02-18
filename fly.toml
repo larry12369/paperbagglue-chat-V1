@@ -8,7 +8,7 @@ primary_region = "hkg"  # 香港区域，亚洲用户访问更快
 
 [build]
   [build.args]
-    PYTHON_VERSION = "3.14"
+    PYTHON_VERSION = "3.12"
 
 [env]
   PORT = "8080"
