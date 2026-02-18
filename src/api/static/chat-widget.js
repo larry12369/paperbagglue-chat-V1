@@ -551,23 +551,17 @@
   }
 
   // ==================== 功能函数 ====================
-  
+
   // 健康检查
   async function healthCheck() {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
-      
-      const response = await fetch(CONFIG.API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: '',
-          session_id: sessionId,
-          health_check: true
-        }),
+
+      // 使用 /health 端点（GET 请求）
+      const healthUrl = CONFIG.API_URL.replace('/api/chat', '/health');
+      const response = await fetch(healthUrl, {
+        method: 'GET',
         signal: controller.signal
       });
 
@@ -575,7 +569,7 @@
 
       isServiceAvailable = response.ok;
       updateConnectionStatus(isServiceAvailable ? 'Online' : 'Offline');
-      
+
       return isServiceAvailable;
     } catch (error) {
       console.log('Health check failed:', error);
