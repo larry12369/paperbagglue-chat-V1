@@ -9,7 +9,7 @@
     s = d.createElement('script'),
     head = d.getElementsByTagName('head')[0] || d.documentElement;
   s.async = true;
-  s.src = 'https://paperbagglue-chat.onrender.com/static/chat-widget.js?v=' + Date.now();
+  s.src = 'https://paperbagglue-chat-v1.fly.dev/static/chat-widget.js?v=' + Date.now();
   s.charset = 'UTF-8';
   s.onerror = function() {
     console.error('Failed to load chat widget');
