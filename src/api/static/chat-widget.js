@@ -7,12 +7,12 @@
 
   // ==================== 配置 ====================
   const CONFIG = {
-    API_URL: 'https://paperbagglue-chat.onrender.com/api/chat',
+    API_URL: 'https://paperbagglue-chat-v1.fly.dev/api/chat',
     WIDGET_ID: 'chat-widget-container',
     AUTO_OPEN_DELAY: 3000, // 3秒后自动打开
-    API_TIMEOUT: 10000, // 10秒超时
-    KEEP_ALIVE_INTERVAL: 5 * 60 * 1000, // 5分钟保持活跃
-    VERSION: '2.1', // 版本号，用于强制刷新缓存
+    API_TIMEOUT: 15000, // 15秒超时（增加超时时间）
+    KEEP_ALIVE_INTERVAL: 2 * 60 * 1000, // 2分钟保持活跃（更频繁的保活）
+    VERSION: '2.2', // 版本号，用于强制刷新缓存
   };
 
   // 生成会话ID
@@ -504,31 +504,41 @@
 
   // ==================== 功能函数 ====================
 
-  // 健康检查
-  async function healthCheck() {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+  // 健康检查 - 增加重试机制
+  async function healthCheck(retryCount = 2) {
+    for (let i = 0; i < retryCount; i++) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
 
-      // 使用 /health 端点（GET 请求）
-      const healthUrl = CONFIG.API_URL.replace('/api/chat', '/health');
-      const response = await fetch(healthUrl, {
-        method: 'GET',
-        signal: controller.signal
-      });
+        // 使用 /health 端点（GET 请求）
+        const healthUrl = CONFIG.API_URL.replace('/api/chat', '/health');
+        const response = await fetch(healthUrl, {
+          method: 'GET',
+          signal: controller.signal,
+          cache: 'no-cache' // 禁用缓存
+        });
 
-      clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
 
-      isServiceAvailable = response.ok;
-      updateConnectionStatus(isServiceAvailable ? 'Online' : 'Offline');
-
-      return isServiceAvailable;
-    } catch (error) {
-      console.log('Health check failed:', error);
-      isServiceAvailable = false;
-      updateConnectionStatus('Connecting...');
-      return false;
+        if (response.ok) {
+          isServiceAvailable = true;
+          updateConnectionStatus("We're Online");
+          return true;
+        }
+      } catch (error) {
+        console.log(`Health check attempt ${i + 1} failed:`, error);
+        // 如果不是最后一次尝试，等待 1 秒后重试
+        if (i < retryCount - 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
     }
+
+    // 所有尝试都失败
+    isServiceAvailable = false;
+    updateConnectionStatus('Connecting...');
+    return false;
   }
 
   // 更新连接状态
@@ -606,17 +616,20 @@
     input.value = '';
   }
 
-  async function sendText(message) {
+  async function sendText(message, retryCount = 0, maxRetries = 2) {
     const input = document.getElementById('chat-input');
     
     input.disabled = true;
     document.getElementById('send-btn').disabled = true;
 
-    if (!message.startsWith('[Image uploaded]')) {
+    if (!message.startsWith('[Image uploaded]') && retryCount === 0) {
       addMessage(message, 'user');
     }
 
-    showTypingIndicator();
+    // 只有第一次调用时显示加载指示器
+    if (retryCount === 0) {
+      showTypingIndicator();
+    }
 
     try {
       const controller = new AbortController();
@@ -647,14 +660,23 @@
       if (data.response) {
         addMessage(data.response, 'bot');
         isServiceAvailable = true;
-        updateConnectionStatus('Online');
+        updateConnectionStatus("We're Online");
       } else {
         throw new Error('No response from server');
       }
 
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error, 'Retry:', retryCount + 1, '/', maxRetries);
 
+      // 如果还有重试机会，自动重试
+      if (retryCount < maxRetries) {
+        removeTypingIndicator();
+        // 等待 2 秒后重试
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        return sendText(message, retryCount + 1, maxRetries);
+      }
+
+      // 所有重试都失败
       removeTypingIndicator();
 
       // 超时或错误，显示备用联系方式
