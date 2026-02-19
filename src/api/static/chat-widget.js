@@ -47,14 +47,6 @@
               </div>
             </div>
             <div class="chat-header-actions">
-              <button class="expand-btn" onclick="window.chatWidget.toggleExpand()" title="Expand">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15 3H21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M10 14L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M9 21H3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M14 10L3 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
               <button class="close-btn" onclick="window.chatWidget.toggle()">×</button>
             </div>
           </div>
@@ -65,14 +57,6 @@
               <p>Hello 👋 I'm Larry.</p>
               <p>I recommend or customize adhesives based on your equipment and speed.</p>
               <p>Chat here or WhatsApp: +86 133-2327-3311</p>
-            </div>
-          </div>
-
-          <!-- 加载提示 -->
-          <div id="loading-message" class="message bot-message" style="display: none;">
-            <div class="message-content loading-content">
-              <div class="loading-spinner"></div>
-              <p id="loading-text">Connecting to service...</p>
             </div>
           </div>
 
@@ -207,7 +191,8 @@
         .online-status {
           margin: 0 !important;
           font-size: 10px !important;
-          opacity: 0.9 !important;
+          color: #ffffff !important;
+          font-weight: 500 !important;
         }
 
         /* 头部右侧按钮容器 */
@@ -558,11 +543,11 @@
       }
       
       if (status === 'Online') {
-        statusEl.style.color = '#4CAF50';
+        statusEl.style.color = '#ffffff'; // 白色，更清晰
       } else if (status === 'Offline') {
-        statusEl.style.color = '#ff4444';
+        statusEl.style.color = '#ffcccc'; // 淡红色
       } else {
-        statusEl.style.color = '#ff9800';
+        statusEl.style.color = '#ffffff'; // 白色
       }
     }
   }
