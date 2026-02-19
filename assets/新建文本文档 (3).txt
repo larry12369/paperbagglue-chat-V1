@@ -1,0 +1,452 @@
+flyctl deploy --build-only --push -a paperbagglue-chat-v1 --image-label deployment-43873bf5b78f5e699605515fd6b889a2 --config fly.toml
+Validating fly.toml
+[32m✓[0m Configuration is valid
+==> Verifying app config
+--> Verified app config
+==> Building image
+Waiting for depot builder...
+
+==> Building image with Depot
+--> build:  (​)
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 572B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 0.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 665B done
+#3 DONE 0.0s
+
+#4 [1/6] FROM docker.io/library/python:3.12-slim@sha256:9e01bf1ae5db7649a236da7be1e94ffbbbdd7a93f867dd0d8d5720d9e1f89fab
+#4 resolve docker.io/library/python:3.12-slim@sha256:9e01bf1ae5db7649a236da7be1e94ffbbbdd7a93f867dd0d8d5720d9e1f89fab done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 109.98kB 0.0s done
+#5 DONE 0.0s
+
+#6 [2/6] WORKDIR /app
+#6 CACHED
+
+#7 [3/6] RUN apt-get update && apt-get install -y     gcc     g++     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/6] COPY requirements.txt .
+#8 DONE 0.0s
+
+#9 [5/6] RUN pip install --no-cache-dir -r requirements.txt
+#9 2.215 Collecting alembic==1.16.5 (from -r requirements.txt (line 1))
+#9 2.240   Downloading alembic-1.16.5-py3-none-any.whl.metadata (7.3 kB)
+#9 2.248 Collecting annotated-doc==0.0.4 (from -r requirements.txt (line 2))
+#9 2.250   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#9 2.258 Collecting annotated-types==0.7.0 (from -r requirements.txt (line 3))
+#9 2.260   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#9 2.279 Collecting anyio==4.12.1 (from -r requirements.txt (line 4))
+#9 2.281   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+#9 2.298 Collecting APScheduler==3.11.2 (from -r requirements.txt (line 5))
+#9 2.300   Downloading apscheduler-3.11.2-py3-none-any.whl.metadata (6.4 kB)
+#9 2.357 Collecting astroid==3.1.0 (from -r requirements.txt (line 6))
+#9 2.360   Downloading astroid-3.1.0-py3-none-any.whl.metadata (4.5 kB)
+#9 2.375 Collecting Authlib==1.6.6 (from -r requirements.txt (line 7))
+#9 2.379   Downloading authlib-1.6.6-py2.py3-none-any.whl.metadata (9.8 kB)
+#9 2.395 Collecting beautifulsoup4==4.14.3 (from -r requirements.txt (line 8))
+#9 2.398   Downloading beautifulsoup4-4.14.3-py3-none-any.whl.metadata (3.8 kB)
+#9 2.779 Collecting boto3==1.40.61 (from -r requirements.txt (line 9))
+#9 2.782   Downloading boto3-1.40.61-py3-none-any.whl.metadata (6.6 kB)
+#9 3.236 Collecting botocore==1.40.61 (from -r requirements.txt (line 10))
+#9 3.238   Downloading botocore-1.40.61-py3-none-any.whl.metadata (5.7 kB)
+#9 3.255 Collecting cachetools==6.2.6 (from -r requirements.txt (line 11))
+#9 3.258   Downloading cachetools-6.2.6-py3-none-any.whl.metadata (5.6 kB)
+#9 3.275 Collecting certifi==2026.1.4 (from -r requirements.txt (line 12))
+#9 3.278   Downloading certifi-2026.1.4-py3-none-any.whl.metadata (2.5 kB)
+#9 3.384 Collecting cffi==2.0.0 (from -r requirements.txt (line 13))
+#9 3.387   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#9 3.394 Collecting chardet==5.2.0 (from -r requirements.txt (line 14))
+#9 3.397   Downloading chardet-5.2.0-py3-none-any.whl.metadata (3.4 kB)
+#9 3.474 Collecting charset-normalizer==3.4.4 (from -r requirements.txt (line 15))
+#9 3.477   Downloading charset_normalizer-3.4.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (37 kB)
+#9 3.495 Collecting click==8.3.1 (from -r requirements.txt (line 16))
+#9 3.497   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#9 3.904 Collecting coverage==7.13.3 (from -r requirements.txt (line 17))
+#9 3.909   Downloading coverage-7.13.3-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (8.5 kB)
+#9 3.920 Collecting coze-coding-dev-sdk==0.5.8 (from -r requirements.txt (line 18))
+#9 3.924   Downloading coze_coding_dev_sdk-0.5.8-py3-none-any.whl.metadata (17 kB)
+#9 3.938 Collecting coze-coding-utils==0.2.4 (from -r requirements.txt (line 19))
+#9 3.942   Downloading coze_coding_utils-0.2.4-py3-none-any.whl.metadata (977 bytes)
+#9 3.948 Collecting coze-workload-identity==0.1.4 (from -r requirements.txt (line 20))
+#9 3.952   Downloading coze_workload_identity-0.1.4.tar.gz (19 kB)
+#9 3.964   Installing build dependencies: started
+#9 5.938   Installing build dependencies: finished with status 'done'
+#9 5.940   Getting requirements to build wheel: started
+#9 6.288   Getting requirements to build wheel: finished with status 'done'
+#9 6.290   Preparing metadata (pyproject.toml): started
+#9 6.539   Preparing metadata (pyproject.toml): finished with status 'done'
+#9 6.558 Collecting cozeloop==0.1.25 (from -r requirements.txt (line 21))
+#9 6.562   Downloading cozeloop-0.1.25-py3-none-any.whl.metadata (2.7 kB)
+#9 6.817 Collecting cryptography==46.0.4 (from -r requirements.txt (line 22))
+#9 6.820   Downloading cryptography-46.0.4-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#9 6.834 Collecting cssselect==1.4.0 (from -r requirements.txt (line 23))
+#9 6.836   Downloading cssselect-1.4.0-py3-none-any.whl.metadata (2.4 kB)
+#9 6.843 Collecting dbus-python==1.3.2 (from -r requirements.txt (line 24))
+#9 6.847   Downloading dbus-python-1.3.2.tar.gz (605 kB)
+#9 6.853      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 605.5/605.5 kB 370.4 MB/s eta 0:00:00
+#9 6.940   Installing build dependencies: started
+#9 9.825   Installing build dependencies: finished with status 'done'
+#9 9.826   Getting requirements to build wheel: started
+#9 10.02   Getting requirements to build wheel: finished with status 'done'
+#9 10.02   Preparing metadata (pyproject.toml): started
+#9 11.90   Preparing metadata (pyproject.toml): finished with status 'error'
+#9 11.91   error: subprocess-exited-with-error
+#9 11.91   
+#9 11.91   × Preparing metadata (pyproject.toml) did not run successfully.
+#9 11.91   │ exit code: 1
+#9 11.91   ╰─> [95 lines of output]
+#9 11.91       + meson setup /tmp/pip-install-7jukafab/dbus-python_7241d8e668064f5aa7fccf8a7f923e42 /tmp/pip-install-7jukafab/dbus-python_7241d8e668064f5aa7fccf8a7f923e42/.mesonpy-6nw_hbbj -Dbuildtype=release -Db_ndebug=if-release -Db_vscrt=md --native-file=/tmp/pip-install-7jukafab/dbus-python_7241d8e668064f5aa7fccf8a7f923e42/.mesonpy-6nw_hbbj/meson-python-native-file.ini
+#9 11.91       The Meson build system
+#9 11.91       Version: 1.10.1
+#9 11.91       Source dir: /tmp/pip-install-7jukafab/dbus-python_7241d8e668064f5aa7fccf8a7f923e42
+#9 11.91       Build dir: /tmp/pip-install-7jukafab/dbus-python_7241d8e668064f5aa7fccf8a7f923e42/.mesonpy-6nw_hbbj
+#9 11.91       Build type: native build
+#9 11.91       Project name: dbus-python
+#9 11.91       Project version: 1.3.2
+#9 11.91       C compiler for the host machine: cc (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+#9 11.91       C linker for the host machine: cc ld.bfd 2.44
+#9 11.91       Host machine cpu family: x86_64
+#9 11.91       Host machine cpu: x86_64
+#9 11.91       Compiler for C supports arguments -fno-common: YES
+#9 11.91       Compiler for C supports arguments -Wno-missing-field-initializers: YES
+#9 11.91       Compiler for C supports arguments -Wno-declaration-after-statement: YES
+#9 11.91       Compiler for C supports arguments -Wno-inline: YES
+#9 11.91       Compiler for C supports arguments -Wno-redundant-decls: YES
+#9 11.91       Compiler for C supports arguments -Wno-switch-default: YES
+#9 11.91       Compiler for C supports arguments -Wno-write-strings: YES
+#9 11.91       Compiler for C supports arguments -Wcast-align: YES
+#9 11.91       Compiler for C supports arguments -Wdouble-promotion: YES
+#9 11.91       Compiler for C supports arguments -Wduplicated-cond: YES
+#9 11.91       Compiler for C supports arguments -Wfloat-equal: YES
+#9 11.91       Compiler for C supports arguments -Wformat-nonliteral: YES
+#9 11.91       Compiler for C supports arguments -Wformat-security: YES
+#9 11.91       Compiler for C supports arguments -Wformat=2: YES
+#9 11.91       Compiler for C supports arguments -Winit-self: YES
+#9 11.91       Compiler for C supports arguments -Wlogical-op: YES
+#9 11.91       Compiler for C supports arguments -Wmissing-declarations: YES
+#9 11.91       Compiler for C supports arguments -Wmissing-format-attribute: YES
+#9 11.91       Compiler for C supports arguments -Wmissing-include-dirs: YES
+#9 11.91       Compiler for C supports arguments -Wmissing-noreturn: YES
+#9 11.91       Compiler for C supports arguments -Wnull-dereference: YES
+#9 11.91       Compiler for C supports arguments -Wpacked: YES
+#9 11.91       Compiler for C supports arguments -Wpointer-arith: YES
+#9 11.91       Compiler for C supports arguments -Wshadow: YES
+#9 11.91       Compiler for C supports arguments -Wswitch-enum: YES
+#9 11.91       Compiler for C supports arguments -Wundef: YES
+#9 11.91       Compiler for C supports arguments -Wunused-but-set-variable: YES
+#9 11.91       Compiler for C supports arguments -Wjump-misses-init: YES
+#9 11.91       Compiler for C supports arguments -Wmissing-prototypes: YES
+#9 11.91       Compiler for C supports arguments -Wnested-externs: YES
+#9 11.91       Compiler for C supports arguments -Wold-style-definition: YES
+#9 11.91       Compiler for C supports arguments -Wpointer-sign: YES
+#9 11.91       Compiler for C supports arguments -Wstrict-prototypes: YES
+#9 11.91       Configuring _dbus-python-config.h using configuration
+#9 11.91       
+#9 11.91       Executing subproject dbus-gmain
+#9 11.91       
+#9 11.91       dbus-gmain| Project name: dbus-gmain
+#9 11.91       dbus-gmain| Project version: undefined
+#9 11.91       dbus-gmain| C compiler for the host machine: cc (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+#9 11.91       dbus-gmain| C linker for the host machine: cc ld.bfd 2.44
+#9 11.91       dbus-gmain| Compiler for C supports arguments -fno-common: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wno-missing-field-initializers: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wcast-align: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wdouble-promotion: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wduplicated-branches: YES
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wduplicated-cond: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wfloat-equal: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wformat-nonliteral: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wformat-security: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wformat=2: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Winit-self: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wlogical-op: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wmissing-declarations: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wmissing-format-attribute: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wmissing-include-dirs: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wmissing-noreturn: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wnull-dereference: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wpacked: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wpointer-arith: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wredundant-decls: YES
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wshadow: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wswitch-default: YES
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wswitch-enum: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wundef: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wunused-but-set-variable: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wwrite-strings: YES
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wdeclaration-after-statement: YES
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wjump-misses-init: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wmissing-prototypes: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wnested-externs: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wold-style-definition: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wpointer-sign: YES (cached)
+#9 11.91       dbus-gmain| Compiler for C supports arguments -Wstrict-prototypes: YES (cached)
+#9 11.91       dbus-gmain| Did not find pkg-config by name 'pkg-config'
+#9 11.91       dbus-gmain| Found pkg-config: NO
+#9 11.91       dbus-gmain| Did not find CMake 'cmake'
+#9 11.91       dbus-gmain| Found CMake: NO
+#9 11.91       dbus-gmain| Run-time dependency dbus-1 found: NO
+#9 11.91       
+#9 11.91       ../subprojects/dbus-gmain/meson.build:107:11: ERROR: Dependency lookup for dbus-1 with method 'pkgconfig' failed: Pkg-config for machine host machine not found. Giving up.
+#9 11.91       
+#9 11.91       A full log can be found at /tmp/pip-install-7jukafab/dbus-python_7241d8e668064f5aa7fccf8a7f923e42/.mesonpy-6nw_hbbj/meson-logs/meson-log.txt
+#9 11.91       [end of output]
+#9 11.91   
+#9 11.91   note: This error originates from a subprocess, and is likely not a problem with pip.
+#9 11.99 
+#9 11.99 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#9 11.99 [notice] To update, run: pip install --upgrade pip
+#9 11.99 error: metadata-generation-failed
+#9 11.99 
+#9 11.99 × Encountered error while generating package metadata.
+#9 11.99 ╰─> See above for output.
+#9 11.99 
+#9 11.99 note: This is an issue with the package mentioned above, not pip.
+#9 11.99 hint: See above for details.
+#9 ERROR: process "/bin/sh -c pip install --no-cache-dir -r requirements.txt" did not complete successfully: exit code: 1
+------
+ > [5/6] RUN pip install --no-cache-dir -r requirements.txt:
+11.99 
+11.99 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+11.99 [notice] To update, run: pip install --upgrade pip
+11.99 error: metadata-generation-failed
+11.99 
+11.99 × Encountered error while generating package metadata.
+11.99 ╰─> See above for output.
+11.99 
+11.99 note: This is an issue with the package mentioned above, not pip.
+11.99 hint: See above for details.
+------
+==> Building image
+Waiting for depot builder...
+
+==> Building image with Depot
+--> build:  (​)
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 572B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 0.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 665B done
+#3 DONE 0.0s
+
+#4 [1/6] FROM docker.io/library/python:3.12-slim@sha256:9e01bf1ae5db7649a236da7be1e94ffbbbdd7a93f867dd0d8d5720d9e1f89fab
+#4 resolve docker.io/library/python:3.12-slim@sha256:9e01bf1ae5db7649a236da7be1e94ffbbbdd7a93f867dd0d8d5720d9e1f89fab done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.54kB 0.0s done
+#5 DONE 0.0s
+
+#6 [2/6] WORKDIR /app
+#6 CACHED
+
+#7 [3/6] RUN apt-get update && apt-get install -y     gcc     g++     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/6] COPY requirements.txt .
+#8 CACHED
+
+#9 [5/6] RUN pip install --no-cache-dir -r requirements.txt
+#9 1.901 Collecting alembic==1.16.5 (from -r requirements.txt (line 1))
+#9 1.924   Downloading alembic-1.16.5-py3-none-any.whl.metadata (7.3 kB)
+#9 1.933 Collecting annotated-doc==0.0.4 (from -r requirements.txt (line 2))
+#9 1.935   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#9 1.944 Collecting annotated-types==0.7.0 (from -r requirements.txt (line 3))
+#9 1.947   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#9 1.968 Collecting anyio==4.12.1 (from -r requirements.txt (line 4))
+#9 1.971   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+#9 1.990 Collecting APScheduler==3.11.2 (from -r requirements.txt (line 5))
+#9 1.994   Downloading apscheduler-3.11.2-py3-none-any.whl.metadata (6.4 kB)
+#9 2.041 Collecting astroid==3.1.0 (from -r requirements.txt (line 6))
+#9 2.045   Downloading astroid-3.1.0-py3-none-any.whl.metadata (4.5 kB)
+#9 2.061 Collecting Authlib==1.6.6 (from -r requirements.txt (line 7))
+#9 2.065   Downloading authlib-1.6.6-py2.py3-none-any.whl.metadata (9.8 kB)
+#9 2.081 Collecting beautifulsoup4==4.14.3 (from -r requirements.txt (line 8))
+#9 2.084   Downloading beautifulsoup4-4.14.3-py3-none-any.whl.metadata (3.8 kB)
+#9 2.489 Collecting boto3==1.40.61 (from -r requirements.txt (line 9))
+#9 2.492   Downloading boto3-1.40.61-py3-none-any.whl.metadata (6.6 kB)
+#9 2.965 Collecting botocore==1.40.61 (from -r requirements.txt (line 10))
+#9 2.969   Downloading botocore-1.40.61-py3-none-any.whl.metadata (5.7 kB)
+#9 2.989 Collecting cachetools==6.2.6 (from -r requirements.txt (line 11))
+#9 2.992   Downloading cachetools-6.2.6-py3-none-any.whl.metadata (5.6 kB)
+#9 3.011 Collecting certifi==2026.1.4 (from -r requirements.txt (line 12))
+#9 3.014   Downloading certifi-2026.1.4-py3-none-any.whl.metadata (2.5 kB)
+#9 3.115 Collecting cffi==2.0.0 (from -r requirements.txt (line 13))
+#9 3.118   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#9 3.128 Collecting chardet==5.2.0 (from -r requirements.txt (line 14))
+#9 3.131   Downloading chardet-5.2.0-py3-none-any.whl.metadata (3.4 kB)
+#9 3.209 Collecting charset-normalizer==3.4.4 (from -r requirements.txt (line 15))
+#9 3.212   Downloading charset_normalizer-3.4.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (37 kB)
+#9 3.230 Collecting click==8.3.1 (from -r requirements.txt (line 16))
+#9 3.233   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#9 3.628 Collecting coverage==7.13.3 (from -r requirements.txt (line 17))
+#9 3.632   Downloading coverage-7.13.3-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (8.5 kB)
+#9 3.643 Collecting coze-coding-dev-sdk==0.5.8 (from -r requirements.txt (line 18))
+#9 3.646   Downloading coze_coding_dev_sdk-0.5.8-py3-none-any.whl.metadata (17 kB)
+#9 3.661 Collecting coze-coding-utils==0.2.4 (from -r requirements.txt (line 19))
+#9 3.665   Downloading coze_coding_utils-0.2.4-py3-none-any.whl.metadata (977 bytes)
+#9 3.673 Collecting coze-workload-identity==0.1.4 (from -r requirements.txt (line 20))
+#9 3.677   Downloading coze_workload_identity-0.1.4.tar.gz (19 kB)
+#9 3.692   Installing build dependencies: started
+#9 5.348   Installing build dependencies: finished with status 'done'
+#9 5.349   Getting requirements to build wheel: started
+#9 5.638   Getting requirements to build wheel: finished with status 'done'
+#9 5.639   Preparing metadata (pyproject.toml): started
+#9 5.904   Preparing metadata (pyproject.toml): finished with status 'done'
+#9 5.920 Collecting cozeloop==0.1.25 (from -r requirements.txt (line 21))
+#9 5.924   Downloading cozeloop-0.1.25-py3-none-any.whl.metadata (2.7 kB)
+#9 6.185 Collecting cryptography==46.0.4 (from -r requirements.txt (line 22))
+#9 6.188   Downloading cryptography-46.0.4-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#9 6.202 Collecting cssselect==1.4.0 (from -r requirements.txt (line 23))
+#9 6.205   Downloading cssselect-1.4.0-py3-none-any.whl.metadata (2.4 kB)
+#9 6.212 Collecting dbus-python==1.3.2 (from -r requirements.txt (line 24))
+#9 6.216   Downloading dbus-python-1.3.2.tar.gz (605 kB)
+#9 6.221      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 605.5/605.5 kB 488.1 MB/s eta 0:00:00
+#9 6.307   Installing build dependencies: started
+#9 9.316   Installing build dependencies: finished with status 'done'
+#9 9.316   Getting requirements to build wheel: started
+#9 9.480   Getting requirements to build wheel: finished with status 'done'
+#9 9.481   Preparing metadata (pyproject.toml): started
+#9 11.30   Preparing metadata (pyproject.toml): finished with status 'error'
+#9 11.31   error: subprocess-exited-with-error
+#9 11.31   
+#9 11.31   × Preparing metadata (pyproject.toml) did not run successfully.
+#9 11.31   │ exit code: 1
+#9 11.31   ╰─> [95 lines of output]
+#9 11.31       + meson setup /tmp/pip-install-tdlo3yn5/dbus-python_bb652d1d49d4461b8f8d03280981031f /tmp/pip-install-tdlo3yn5/dbus-python_bb652d1d49d4461b8f8d03280981031f/.mesonpy-9c9qju0p -Dbuildtype=release -Db_ndebug=if-release -Db_vscrt=md --native-file=/tmp/pip-install-tdlo3yn5/dbus-python_bb652d1d49d4461b8f8d03280981031f/.mesonpy-9c9qju0p/meson-python-native-file.ini
+#9 11.31       The Meson build system
+#9 11.31       Version: 1.10.1
+#9 11.31       Source dir: /tmp/pip-install-tdlo3yn5/dbus-python_bb652d1d49d4461b8f8d03280981031f
+#9 11.31       Build dir: /tmp/pip-install-tdlo3yn5/dbus-python_bb652d1d49d4461b8f8d03280981031f/.mesonpy-9c9qju0p
+#9 11.31       Build type: native build
+#9 11.31       Project name: dbus-python
+#9 11.31       Project version: 1.3.2
+#9 11.31       C compiler for the host machine: cc (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+#9 11.31       C linker for the host machine: cc ld.bfd 2.44
+#9 11.31       Host machine cpu family: x86_64
+#9 11.31       Host machine cpu: x86_64
+#9 11.31       Compiler for C supports arguments -fno-common: YES
+#9 11.31       Compiler for C supports arguments -Wno-missing-field-initializers: YES
+#9 11.31       Compiler for C supports arguments -Wno-declaration-after-statement: YES
+#9 11.31       Compiler for C supports arguments -Wno-inline: YES
+#9 11.31       Compiler for C supports arguments -Wno-redundant-decls: YES
+#9 11.31       Compiler for C supports arguments -Wno-switch-default: YES
+#9 11.31       Compiler for C supports arguments -Wno-write-strings: YES
+#9 11.31       Compiler for C supports arguments -Wcast-align: YES
+#9 11.31       Compiler for C supports arguments -Wdouble-promotion: YES
+#9 11.31       Compiler for C supports arguments -Wduplicated-cond: YES
+#9 11.31       Compiler for C supports arguments -Wfloat-equal: YES
+#9 11.31       Compiler for C supports arguments -Wformat-nonliteral: YES
+#9 11.31       Compiler for C supports arguments -Wformat-security: YES
+#9 11.31       Compiler for C supports arguments -Wformat=2: YES
+#9 11.31       Compiler for C supports arguments -Winit-self: YES
+#9 11.31       Compiler for C supports arguments -Wlogical-op: YES
+#9 11.31       Compiler for C supports arguments -Wmissing-declarations: YES
+#9 11.31       Compiler for C supports arguments -Wmissing-format-attribute: YES
+#9 11.31       Compiler for C supports arguments -Wmissing-include-dirs: YES
+#9 11.31       Compiler for C supports arguments -Wmissing-noreturn: YES
+#9 11.31       Compiler for C supports arguments -Wnull-dereference: YES
+#9 11.31       Compiler for C supports arguments -Wpacked: YES
+#9 11.31       Compiler for C supports arguments -Wpointer-arith: YES
+#9 11.31       Compiler for C supports arguments -Wshadow: YES
+#9 11.31       Compiler for C supports arguments -Wswitch-enum: YES
+#9 11.31       Compiler for C supports arguments -Wundef: YES
+#9 11.31       Compiler for C supports arguments -Wunused-but-set-variable: YES
+#9 11.31       Compiler for C supports arguments -Wjump-misses-init: YES
+#9 11.31       Compiler for C supports arguments -Wmissing-prototypes: YES
+#9 11.31       Compiler for C supports arguments -Wnested-externs: YES
+#9 11.31       Compiler for C supports arguments -Wold-style-definition: YES
+#9 11.31       Compiler for C supports arguments -Wpointer-sign: YES
+#9 11.31       Compiler for C supports arguments -Wstrict-prototypes: YES
+#9 11.31       Configuring _dbus-python-config.h using configuration
+#9 11.31       
+#9 11.31       Executing subproject dbus-gmain
+#9 11.31       
+#9 11.31       dbus-gmain| Project name: dbus-gmain
+#9 11.31       dbus-gmain| Project version: undefined
+#9 11.31       dbus-gmain| C compiler for the host machine: cc (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+#9 11.31       dbus-gmain| C linker for the host machine: cc ld.bfd 2.44
+#9 11.31       dbus-gmain| Compiler for C supports arguments -fno-common: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wno-missing-field-initializers: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wcast-align: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wdouble-promotion: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wduplicated-branches: YES
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wduplicated-cond: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wfloat-equal: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wformat-nonliteral: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wformat-security: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wformat=2: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Winit-self: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wlogical-op: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wmissing-declarations: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wmissing-format-attribute: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wmissing-include-dirs: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wmissing-noreturn: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wnull-dereference: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wpacked: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wpointer-arith: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wredundant-decls: YES
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wshadow: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wswitch-default: YES
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wswitch-enum: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wundef: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wunused-but-set-variable: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wwrite-strings: YES
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wdeclaration-after-statement: YES
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wjump-misses-init: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wmissing-prototypes: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wnested-externs: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wold-style-definition: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wpointer-sign: YES (cached)
+#9 11.31       dbus-gmain| Compiler for C supports arguments -Wstrict-prototypes: YES (cached)
+#9 11.31       dbus-gmain| Did not find pkg-config by name 'pkg-config'
+#9 11.31       dbus-gmain| Found pkg-config: NO
+#9 11.31       dbus-gmain| Did not find CMake 'cmake'
+#9 11.31       dbus-gmain| Found CMake: NO
+#9 11.31       dbus-gmain| Run-time dependency dbus-1 found: NO
+#9 11.31       
+#9 11.31       ../subprojects/dbus-gmain/meson.build:107:11: ERROR: Dependency lookup for dbus-1 with method 'pkgconfig' failed: Pkg-config for machine host machine not found. Giving up.
+#9 11.31       
+#9 11.31       A full log can be found at /tmp/pip-install-tdlo3yn5/dbus-python_bb652d1d49d4461b8f8d03280981031f/.mesonpy-9c9qju0p/meson-logs/meson-log.txt
+#9 11.31       [end of output]
+#9 11.31   
+#9 11.31   note: This error originates from a subprocess, and is likely not a problem with pip.
+#9 11.38 
+#9 11.38 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#9 11.38 [notice] To update, run: pip install --upgrade pip
+#9 11.38 error: metadata-generation-failed
+#9 11.38 
+#9 11.38 × Encountered error while generating package metadata.
+#9 11.38 ╰─> See above for output.
+#9 11.38 
+#9 11.38 note: This is an issue with the package mentioned above, not pip.
+#9 11.38 hint: See above for details.
+#9 ERROR: process "/bin/sh -c pip install --no-cache-dir -r requirements.txt" did not complete successfully: exit code: 1
+------
+ > [5/6] RUN pip install --no-cache-dir -r requirements.txt:
+11.38 
+11.38 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+11.38 [notice] To update, run: pip install --upgrade pip
+11.38 error: metadata-generation-failed
+11.38 
+11.38 × Encountered error while generating package metadata.
+11.38 ╰─> See above for output.
+11.38 
+11.38 note: This is an issue with the package mentioned above, not pip.
+11.38 hint: See above for details.
+------
+Error: failed to fetch an image or build from source: error building: failed to solve: process "/bin/sh -c pip install --no-cache-dir -r requirements.txt" did not complete successfully: exit code: 1
+Dockerfile failed to build error
+unsuccessful command 'flyctl deploy --build-only --push -a paperbagglue-chat-v1 --image-label deployment-43873bf5b78f5e699605515fd6b889a2 --config fly.toml'
